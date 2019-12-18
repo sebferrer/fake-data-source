@@ -1,0 +1,7 @@
+.idea
+dependency-reduced-pom.xml
+target
+.~lock.output.csv#
+README
+resources/keystore.jks
+*.iml

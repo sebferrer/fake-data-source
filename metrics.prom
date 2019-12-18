@@ -1,0 +1,15 @@
+# HELP score Generated from Dropwizard metric import (metric=score, type=com.datasource.as.metric.DataSource$1)
+# TYPE score gauge
+score 163840.0
+# HELP memory Generated from Dropwizard metric import (metric=memory, type=com.datasource.as.metric.DataSource$1)
+# TYPE memory gauge
+memory 3776512.0
+# HELP cpu2 Generated from Dropwizard metric import (metric=cpu2, type=com.datasource.as.metric.DataSource$1)
+# TYPE cpu2 gauge
+cpu2 753664.0
+# HELP bandwidth Generated from Dropwizard metric import (metric=bandwidth, type=com.datasource.as.metric.DataSource$1)
+# TYPE bandwidth gauge
+bandwidth 131072.0
+# HELP cpu1 Generated from Dropwizard metric import (metric=cpu1, type=com.datasource.as.metric.DataSource$1)
+# TYPE cpu1 gauge
+cpu1 3.71228672E8
