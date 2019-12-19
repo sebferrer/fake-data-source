@@ -20,9 +20,9 @@ public class DataSource {
 
     private final String PROMETHEUS_FILE = "metrics.prom";
     private final String[] METRICS_IDS = {"cpu1", "cpu2", "memory", "bandwidth", "score"};
-    private final Integer INTERVAL = 120;
+    private final Integer INTERVAL = 300;
     ArrayList<Metric> metrics;
-    private Integer maxLength;
+    private Integer maxSize;
     private CollectorRegistry registry;
     private MetricRegistry mrMetrics;
 
@@ -39,7 +39,7 @@ public class DataSource {
             sizes.add(metric.getValues().size());
         }
 
-        this.maxLength = ArrayUtil.getMaxInteger(sizes);
+        this.maxSize = ArrayUtil.getMaxInteger(sizes);
         this.registry = new CollectorRegistry();
         this.mrMetrics = new MetricRegistry();
         this.currentStep = 0;
@@ -64,7 +64,7 @@ public class DataSource {
         registry.register(new DropwizardExports(mrMetrics));
     }
 
-    public void formatMetrics() {
+    private void formatMetrics() {
         try (FileWriter writer = new FileWriter(PROMETHEUS_FILE)) {
 
             TextFormat.write004(writer, registry.metricFamilySamples());
@@ -75,15 +75,19 @@ public class DataSource {
     }
 
     private void nextStep() {
-        currentStep = currentStep == (maxLength + INTERVAL - 1) ? 0 : currentStep + 1;
         for (Metric metric : metrics) {
-            Double currentValue = metric.getValues().get(currentStep);
-            if (currentValue == null) {
-                currentValue = 0d;
+            ArrayList<Double> values = metric.getValues();
+            Double currentValue = 0d;
+            if (currentStep < values.size()) {
+                currentValue = values.get(currentStep);
             }
             metric.setCurrentValue(currentValue);
         }
         formatMetrics();
+        currentStep++;
+        if (currentStep >= maxSize + INTERVAL) {
+            currentStep = 0;
+        }
     }
 
 }
